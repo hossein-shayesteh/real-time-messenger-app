@@ -1,13 +1,19 @@
 "use client";
 import React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof button> {}
+    VariantProps<typeof button> {
+  isLoading?: boolean;
+}
 
 const button = cva(
   [
+    "flex",
+    "justify-center",
+    "align-middle",
     "text-white",
     "mr-2",
     "mb-2",
@@ -101,11 +107,11 @@ const button = cva(
         ],
       },
       size: {
-        xs: ["text-xs", "py-2", "px-3"],
-        small: ["text-sm", "py-2", "px-3"],
-        medium: ["text-sm", "py-2.5", "px-5"],
-        large: ["text-base", "py-3", "px-5"],
-        xl: ["text-base", "py-3.5", "px-6"],
+        xs: ["text-xs", "py-2", "px-3", "h-8"],
+        small: ["text-sm", "py-2", "px-3", "h-9"],
+        medium: ["text-sm", "py-2.5", "px-5", "h-10"],
+        large: ["text-base", "py-3", "px-5", "h-12"],
+        xl: ["text-base", "py-3.5", "px-6", "h-14"],
       },
     },
 
@@ -120,7 +126,18 @@ const Button: React.FC<ButtonProps> = ({
   className,
   intent,
   size,
+  isLoading,
+  children,
   ...props
-}) => <button className={button({ intent, size, className })} {...props} />;
+}) => (
+  <button
+    className={button({ intent, size, className })}
+    {...props}
+    disabled={isLoading}
+  >
+    {isLoading ? <Loader2 className=" h-full animate-spin" /> : null}
+    {children}
+  </button>
+);
 
 export default Button;
